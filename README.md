@@ -81,3 +81,6 @@ Below is a comparison between the models with and without PCA (PCA variance of 0
 ![Comparison](./comparison.png)
 
 As you can see, the MSE and R^2 values are significantly worse for the PCA models. This is interesting because PCA is supposed to reduce the dimensionality of the data and remove noise, but in this case it actually resulted in a decrease in performance.
+
+## Conclusion
+In conclusion, the XGBoost model without PCA was the best model for predicting the market value of residential properties in Philadelphia. The model had an R^2 score of 0.9928 and an MSE of 0.007144. One interesting fact discovered was that the most important factor in the value of the property was the area of the property. The most correlated feature was taxable_land with a correlation factor of 0.937928. The hardest part about this project was dealing with the missing data and other various preprocessing steps. This dataset was very low quality with a lot of missing and incorrect data, so cleaning it up was very time consuming. The next steps I would take to increase the performance would be further feature engineering. I would really like to look into further the effects of location on property value. 
