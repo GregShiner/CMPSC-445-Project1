@@ -1,4 +1,5 @@
 # Philadelphia Housing Data Analysis
+This report is an analysis of housing data in Philadelphia. The goal of this project is to create a model that can predict the market value of a property in Philadelphia. For details of the implementation of the models, please read through the `project.ipynb` Jupyter notebook for descriptions of each step through the process.
 
 ## Data Collection
 The data for this project was gathered from the Philadelphia OPA Property Assesments dataset. The dataset was downloaded from the [OpenDataPhilly](https://www.opendataphilly.org/dataset/opa-property-assessments) website. The dataset contains information on property assessments in Philadelphia. The dataset contains 81 columns and 583,000 rows. The dataset was downloaded as a CSV file and was read into a pandas dataframe for analysis. I also considered scrapping data from the Zillow API, but the process for gaining access to the data was not as easy as just using the public housing data from OpenDataPhilly.
@@ -59,4 +60,24 @@ I tried 5 different models for this project. The models I tried were:
 3. Random Forest
 4. Gradient Boosting (sklearn)
 5. XGBoost
-Also, I tried each of these with no PCA, and with PCA with target variances ranging from 0.1 to 1.0
+
+For each of these models, I also tried using PCA with various target variances ranging from 0.1 to 0.9 to measure the effect of PCA on the accuracy of the models.
+In addition to the original 4 models mentioned, I also tried using the XGBoost model. XGBoost is a powerful gradient boosting model that is known for its speed and accuracy. The sklearn gradient boosting model took approximately 2 minutes to train, while XGBoost took only 3 seconds to train. It also resulted in a significant increase in accuracy over the sklearn gradient boosting model (R^2 0.9788 -> 0.9928). The XGBoost model without PCA by far outperformed all other models with a final R^2 score of 0.9928.
+
+## Results
+In all tests, the XGBoost and forest models were the best, with XGBoost still performing slightly better than the forest model in just the non-PCA model.
+The following are the results of the various PCA models, as well as the models without PCA:
+
+![Results](./results.png)
+
+In all of the PCA models, the random forest model performed the best, with a peak R^2 of 0.9565 for PCA (0.8 variance) and 0.9902 for non-PCA. The XGBoost model performed the best in the non-PCA model with an R^2 of 0.9928 and peaked at 0.9483 for PCA (0.9 variance)
+
+Another interesting result is that the performance of the PCA models plateus after a variance of 0.3. After this, the peak performance of the models caps out at around 0.7 to 0.9 variance. This is interesting because it means that the models are not able to capture any more variance in the data after this point.
+
+We can also see that PCA across the board actually results in a decrease in performance. For all models, the non-PCA versions outperformed all of their PCA counter-parts.
+
+Below is a comparison between the models with and without PCA (PCA variance of 0.95):
+
+![Comparison](./comparison.png)
+
+As you can see, the MSE and R^2 values are significantly worse for the PCA models. This is interesting because PCA is supposed to reduce the dimensionality of the data and remove noise, but in this case it actually resulted in a decrease in performance.
