@@ -7,7 +7,7 @@ The data in this dataset contained primarily property inspection data for all ty
 
 ## Data Preprocessing
 ### Removing Columns With No Useful Information
-The first step in cleaning up this data is removing columns that do not need to be considered. These columns could be removed for a variety of reasons but the most common one was that the data was simply not relevant to the analysis. There were many columns for information such as owner information, book keeping information, tax information, and some geographic information that was not relevant to the analysis. The columns that were kept were the columns that contained information on the property's characteristics, such as number of bedrooms, number of bathrooms, and land size. 
+The first step in cleaning up this data is removing columns that do not need to be considered. These columns could be removed for a variety of reasons but the most common one was that the data was simply not relevant to the analysis. There were many columns for information such as owner information, book keeping information, tax information, and some geographic information that was not relevant to the analysis. The columns that were kept were the columns that contained information on the property's characteristics, such as number of bedrooms, number of bathrooms, and land size. Additionally I kept latitude and longitude to see if there was any linear correlation in property value.
 
 ### Filter Categories
 The next step in cleaning up this data was to filter the data to only include residential properties. This was done by filtering the data to only include properties that had a `category_code` of 1 or 2 which represented single family and multi-family homes respectively.
@@ -43,4 +43,20 @@ In this project, we have 2 types of categorical data:
     d. `exempt_land`: Once again, this column was mapped to `False` for values of 0, and `True` for all other columns.
 
 ### Removing outliers
-The next step in cleaning up this data was to remove outliers. I actually opted to filter these outliers out by manually creating thresholds. I accomplished this by running the data through a data wrangling program like the Visual Studio Code Data Wrangler. I used the program to view the distributions of the numeric columns. I then used these graphs to spot outliers and then manually set thresholds for these columns. I then filtered the data to only include rows that were within these thresholds.
+The next step in cleaning up this data was to remove outliers. I actually opted to filter these outliers out by manually creating thresholds. I accomplished this by running the data through a data wrangling program like the Visual Studio Code Data Wrangler. I used the program to view the distributions of the numeric columns. I then used these graphs to spot outliers and then manually set thresholds for these columns. I then filtered the data to only include rows that were within these thresholds. I opted for this method rather than something like z-score filtering because the data was very non-normal and outliers were very clear to see in the graphs.
+
+## Feature Selection/Engineering
+For this project I created a new column called "bed+bath" which is the sum of the number of bedrooms and bathrooms. The idea behind this is that the number of bedrooms and bathrooms are important for the market value of the property, and people may consider the sum of these 2, comparable, numbers. This resulted in an approximately 1% increase in R^2 for all models.
+
+For feature selection, I very simply calculated the correlation between the target variable and the other variables. I then selected the variables that had the highest correlation with the target variable. However, I found that this actually had a significant negative affect on the accuracy of the models.
+
+Additionally, I used PCA to decrease the dimensionality of the data. I tried using various target variance values, but found that none of these ended up outperforming the models without PCA.
+
+## Model Development
+I tried 5 different models for this project. The models I tried were:
+1. Linear Regression
+2. Decision Tree
+3. Random Forest
+4. Gradient Boosting (sklearn)
+5. XGBoost
+Also, I tried each of these with no PCA, and with PCA with target variances ranging from 0.1 to 1.0
